@@ -1,0 +1,84 @@
+
+
+
+body {
+    background-color: rgb(243, 202, 139);
+    background-image: url(https://steamuserimages-a.akamaihd.net/ugc/1469813763859855001/AB0163D81F91AE79C8E9E83873C1F1ECDCB3C540/?imw=512&&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false);
+    background-size: 600px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-attachment: fixed;
+
+}
+
+
+form {
+    width: 200px;
+    margin: 20px auto;
+    margin-top: 0ex;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    
+}
+
+
+.poke-card {
+    position:sticky;
+    height: fit-content;
+    font-family: 'Concert One', cursive;
+    max-width: 400px;
+    border-radius: 30px;
+    color: #000;
+    text-align: center;
+    padding: 10px;
+    margin: 0 auto;
+    background-position: center center;
+    background-color: aliceblue;
+    border: 3px solid rgb(0, 0, 0);
+}
+
+.poke-card::before {
+    content: '';
+    background: border-radius(black 33%, transparent 33%);
+    background-size: 3px 3px;
+    border-radius: 20px;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    z-index: -1;
+}
+
+.img-container {
+    position: relative;
+    width: 180px;
+    margin: 10px auto;
+}
+
+.poke-stats div {
+    display: flex;
+    justify-content: space-between;
+    align-content: space-between;
+    padding: 5px;
+    font-size: 18px;
+}
+
+.poke-types div {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+    border: 1px groove black;
+    background-color: rgb(0, 0, 0);
+}
+
+.poke-img {
+    width: 180px;
+    border-radius: 50%;
+}
+
+
+
