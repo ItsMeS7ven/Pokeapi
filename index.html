@@ -1,56 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POKEDEX </title>
-    
 
-<!--fuente de texto -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+    <!--fuente de texto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
 
-
-<!--enlaces al css y al js ( el defer se utiliza para no tener que mandar el script al final del body!!)-->
-<script src="script.js" type="text/javascript" defer></script>
-<link href="styles.css"  rel="stylesheet" />
+    <!--enlaces al css y al js ( el defer se utiliza para no tener que mandar el script al final del body!!)-->
+    <script src="script.js" type="text/javascript" defer></script>
+    <link href="styles.css" rel="stylesheet" />
 
 </head>
+
 <body>
 
     <!--función donde se encuentra en el input ( apretar para buscar el pokemon ;js )-->
-    
+
     <form action="" onsubmit="searchPokemon (event)">
 
-    <!--el autocomplete es para que no aparezca el historial de busquedas de pokemons . secundario-->
-        <input type="text" name="pokemon" autocomplete="off" >
-    </form> 
+        <!--el autocomplete es para que no aparezca el historial de busquedas de pokemons . secundario-->
+        <input type="text" name="pokemon" autocomplete="off">
+    </form>
 
 
-    <!--data para dar nombre a los dintitos elementos en la pokedex-->
-    <div data-poke-card class="poke-card"> 
 
-    <!--nombre pokemon-->
+
+    <!--data para dar nombre a los disntitos elementos en la pokedex-->
+    <div data-poke-card class="poke-card">
+
+        <!--nombre pokemon-->
         <div data-poke-name>Pokedex</div>
 
-    <!--imagen pokemon ; si no existe ese pokemon saldra la imagen del poke-shadow-->
+        <!--imagen pokemon ; si no existe ese pokemon saldra la imagen del poke-shadow-->
         <div data-poke-img-container class="img-container ">
             <img data-poke-img class="poke-img" src="./noseencontro.png">
 
-    <!--el numero de la pokedex del respectivo pokemon-->
-    <div>
-        <div data-poke-id></div>
+            <!--el numero de la pokedex del respectivo pokemon-->
+            <div>
+                <div data-poke-id></div>
 
-    <!--los tipos de los pokemon ( agua, fuego, etc..)-->
-        <div data-poke-types class="poke-types"></div>
+                <!--los tipos de los pokemon ( agua, fuego, etc..)-->
+                <div data-poke-types class="poke-types"></div>
+                <!--altura y peso del pokemon (metros y kg)-->
+                <div data-poke-measurements class="poke-measurements"></div>
+                <!--las estadisticas de cada pokemon-->
+                <div data-poke-stats class="poke-stats"></div>
+            </div>
 
-    <!--las estadisticas de cada pokemon-->   
-        <div data-poke-stats class="poke-stats"></div>
-    </div>
-
-<!--<footer class="pie-pagina">
+            <!--<footer class="pie-pagina">
 
             <div class="box">
                 <h1>SOBRE NOSOTROS</h1>
@@ -78,9 +81,10 @@
             <small>2022 <b>andy and gabs company</b> - Todos los derechos reservados </small>
     </footer>
 
----> 
+--->
 
 
 
 </body>
+
 </html>
