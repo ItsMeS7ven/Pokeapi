@@ -66,6 +66,8 @@ const pokeName = document.querySelector('[data-poke-name]');
 
 const pokeImg = document.querySelector('[data-poke-img]');
 
+const pokeImgBack = document.querySelector('[data-poke-back-img]')
+
 const pokeImgContainer = document.querySelector('[data-poke-img-container]');
 
 const pokeId = document.querySelector('[data-poke-id]');
@@ -144,9 +146,11 @@ const searchPokemon = event => {
 
 const renderPokemonData = data => {
     const sprite = data.sprites.front_default;
+    const spriteBack = data.sprites.back_default;
     const { stats, types } = data;
     pokeName.textContent = data.name;
     pokeImg.setAttribute('src', sprite);
+    pokeImgBack.setAttribute('src',spriteBack);
     pokeId.textContent = `Nº ${data.id}`;
     setCardColor(types);
     renderPokemonMeasurements(data);
@@ -194,6 +198,7 @@ function renderPokemonMeasurements(pokemon) {
 const renderNotFound = () => {
     pokeName.textContent = 'No encontrado';
     pokeImg.setAttribute('src', 'sadge.png');
+    pokeImgBack.setAttribute('src', '');
     pokeImg.style.background = '#fff';
     pokeTypes.innerHTML = '';
     pokeStats.innerHTML = '';

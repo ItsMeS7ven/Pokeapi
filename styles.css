@@ -233,18 +233,14 @@
         border-radius: 50%;
     }
 
-
-    .shiny-img {
-        width: 80px;
-        margin: 20px;
-        padding: 10px;
-
-
-}
     
+    .poke-back-img {
+        width: 180px;
+        border-radius: 50%;
+    }
 
 
-aside {
+    aside {
     
     font-family: 'Concert One', cursive;
     width: 700px;
@@ -259,7 +255,7 @@ aside {
     margin: 10px ;
     max-height: 500px fit-content;
     font-size: 15px;
-}
+    }
 
 
 
