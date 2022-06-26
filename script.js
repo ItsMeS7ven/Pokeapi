@@ -203,6 +203,7 @@ const renderNotFound = () => {
     pokeTypes.innerHTML = '';
     pokeStats.innerHTML = '';
     pokeId.textContent = '';
+    pokeMeasurements.innerHTML ='';
 
 
 }
