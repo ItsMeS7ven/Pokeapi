@@ -223,7 +223,7 @@
     
     .back-img {
         width: 80px;
-        margin: 50px;
+        margin: 20px;
         padding: 10px;
 
     }
@@ -236,12 +236,33 @@
 
     .shiny-img {
         width: 80px;
-        margin: 50px;
+        margin: 20px;
         padding: 10px;
 
 
 }
     
+
+
+aside {
+    
+    font-family: 'Concert One', cursive;
+    width: 700px;
+    border-radius: 30px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    line-height: 50px;
+    padding: 50px;
+    background-color: rgb(180, 3, 3);
+    background-attachment: fixed;
+    border: 5px solid rgb(0, 0, 0);
+    margin: 10px ;
+    max-height: 500px fit-content;
+    font-size: 15px;
+}
+
+
+
     
     footer {
         background-color: #000;
@@ -258,18 +279,3 @@
     
     }
     
-    aside {
-    
-        font-family: 'Concert One', cursive;
-        width: 700px;
-        border-radius: 30px;
-        color: #000;
-        text-align: center;
-        padding: 70px;
-        background-color: rgb(180, 3, 3);
-        background-attachment: fixed;
-        border: 5px solid rgb(0, 0, 0);
-        margin: 10px ;
-        max-height: 500px fit-content;
-        font-size: 20px;
-    }
