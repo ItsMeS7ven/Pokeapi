@@ -1,3 +1,10 @@
+class Pokemon {
+    constructor(name, urlStats, urlSpecies) {
+        this.name = name;
+        this.urlStats = urlStats;
+        this.urlSpecies = urlSpecies;
+    }
+}
 // getData(url) devuelve una promesa que si funciona devuelve el objeto correspondiente a la URL que le hayamos pasado
 // La URL debe ser válida
 async function getData(url) {
@@ -21,6 +28,53 @@ function getNameLang(obj, lang) {
     return en
 }
 
+function getPokemon(species, lang) {
+    let pkmn = new Pokemon("", species.varieties[0].pokemon.url);
+    for (let i = 0; i < species.names.length; i++) {
+        if (species.names[i].language.name === lang) {
+            pkmn.name = species.names[i].name;
+            return pkmn;
+        } else if (species.names[i].language.name === "en") {
+            pkmn.name = species.names[i].name;
+        }
+    }
+    return pkmn
+}
+
+async function searchMatches(string, lang) {
+    const allData = await getData("https://pokeapi.co/api/v2/pokemon-species/?limit=20000");
+    string = string.toLowerCase();
+    let pkmnArr = new Array;
+    for (let i = 0; i < allData.count; i++) {
+        pkmn = getPokemon(await getData(allData.results[i].url), lang);
+        if (pkmn.name.includes(string)) {
+            pkmnArr.push(pkmn);
+        }
+    }
+    return pkmnArr
+}
+
+//quickRender(pkmn, name) genera cada una de las piezas de la lista de pokemon a elegir
+function quickRender(pkmn, name) {
+    fragment = document.createDocumentFragment();
+    const square = document.createElement("div")
+    square.addEventListener("click", event => fullRender(pkmn));
+    const img = document.createElement("img");
+    img.setAttribute("src", pkmn.sprites.front_default);
+    const txt = document.createElement("p");
+    txt.append(document.createTextNode(name));
+    square.appendChild(img);
+    square.appendChild(txt)
+    fragment.appendChild(square);
+    return fragment;
+}
+
+function listPokemon(pkmnArr) {
+    pkmnArr.forEach(element => {
+        quickRender(element.urlStats, element.name)
+    });
+}
+
 // getDexEntries (obj, lang) recibe el objeto y un código de idioma y devuelve un array con las entradas de pokedex en el idioma.
 // Si el código de idioma no coincide con los disponibles devuelve inglés (en).
 // El objeto recibido debe poseer las estructuras obj.flavor_text_entries[].flavor_text obj.flavor_text_entries[].language.name
@@ -35,7 +89,7 @@ function getDexEntries(obj, lang) {
             enArr.push(obj.flavor_text_entries[i].flavor_text)
         }
     }
-    if (langArr.length < 0) {
+    if (langArr.length > 0) {
         return langArr
     } else {
         return enArr
@@ -68,6 +122,7 @@ const pokeId = document.querySelector('[data-poke-id]');
 const pokeTypes = document.querySelector('[data-poke-types]');
 const pokeStats = document.querySelector('[data-poke-stats]');
 const pokeMeasurements = document.querySelector('[data-poke-measurements]')
+const pokedex = document.querySelector('[data-get-dex-entries]')
 
 // los colores que asocias a los tipos ( sacados de la tabla de colores hex)
 
@@ -119,20 +174,19 @@ que no de problemas al usuario si utiliza mayusculas; por ultimo renderPokemonDa
 const searchPokemon = event => {
     event.preventDefault();
     const { value } = event.target.pokemon;
-    getAllSpecies(value, "en").then(pkmnArr => {
-        if (pkmnArr.length === 1) {
-            getData(pkmnArr[0].varieties[0].pokemon.url).then(pokemon => {
-                renderPokemonData(pokemon)
-            })
+    searchMatches(value, "en").then(pkmnArr => {
+        if (pkmnArr.length == 1) {
+            renderPokemonData(pkmnArr[0].urlStats)
+        } else if (pkmnArr.length > 1) {
+            listPokemon(pkmnArr);
+            const dex = getDexEntries(pkmnArr[0]);
+            renderDexEntry(dex[Math.floor(Math.random() * dex.length)])
         } else {
-            renderNotFound();
+            renderNotFound()
         }
-    });
+    })
 
 }
-
-
-
 
 const renderPokemonData = data => {
     const sprite = data.sprites.front_default;
@@ -144,6 +198,14 @@ const renderPokemonData = data => {
     renderPokemonMeasurements(data);
     renderPokemonTypes(types);
     renderPokemonStats(stats);
+}
+
+function renderPokemonList(pkmnArr) {
+    var fragment = document.createDocumentFragment();
+    for (let i = 0; i < pkmnArr[i]; i++) {
+        fragment
+    }
+
 }
 
 
@@ -190,4 +252,9 @@ const renderNotFound = () => {
     pokeTypes.innerHTML = '';
     pokeStats.innerHTML = '';
     pokeId.textContent = '';
+    renderDexEntry("????????????????????????????????????????")
+}
+
+function renderDexEntry(entry) {
+    pokedex.textContent = entry;
 }
