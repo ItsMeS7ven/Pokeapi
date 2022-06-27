@@ -1,6 +1,3 @@
-
-
-
 body {
     background-color: rgb(243, 202, 139);
     background-image: url(https://steamuserimages-a.akamaihd.net/ugc/1469813763859855001/AB0163D81F91AE79C8E9E83873C1F1ECDCB3C540/?imw=512&&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false);
@@ -8,9 +5,7 @@ body {
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-attachment: fixed;
-
 }
-
 
 form {
     width: 200px;
@@ -21,12 +16,25 @@ form {
 input {
     width: 100%;
     padding: 10px;
-    
 }
 
-
 .poke-card {
-    position:sticky;
+    position: sticky;
+    height: fit-content;
+    font-family: 'Concert One', cursive;
+    max-width: 400px;
+    border-radius: 30px;
+    color: #000;
+    text-align: center;
+    padding: 10px;
+    margin: 0 auto;
+    background-position: center center;
+    background-color: aliceblue;
+    border: 3px solid rgb(0, 0, 0);
+}
+
+.poke-list {
+    position: sticky;
     height: fit-content;
     font-family: 'Concert One', cursive;
     max-width: 400px;
@@ -79,6 +87,3 @@ input {
     width: 180px;
     border-radius: 50%;
 }
-
-
-

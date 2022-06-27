@@ -1,8 +1,8 @@
 class Pokemon {
-    constructor(name, urlStats, urlSpecies) {
+    constructor(name, stats, species) {
         this.name = name;
-        this.urlStats = urlStats;
-        this.urlSpecies = urlSpecies;
+        this.stats = stats;
+        this.species = species;
     }
 }
 // getData(url) devuelve una promesa que si funciona devuelve el objeto correspondiente a la URL que le hayamos pasado
@@ -28,8 +28,8 @@ function getNameLang(obj, lang) {
     return en
 }
 
-function getPokemon(species, lang) {
-    let pkmn = new Pokemon("", species.varieties[0].pokemon.url);
+async function getPokemon(species, lang) {
+    let pkmn = new Pokemon("", await getData(species.varieties[0].pokemon.url), species);
     for (let i = 0; i < species.names.length; i++) {
         if (species.names[i].language.name === lang) {
             pkmn.name = species.names[i].name;
@@ -46,7 +46,7 @@ async function searchMatches(string, lang) {
     string = string.toLowerCase();
     let pkmnArr = new Array;
     for (let i = 0; i < allData.count; i++) {
-        pkmn = getPokemon(await getData(allData.results[i].url), lang);
+        let pkmn = await getPokemon(await getData(allData.results[i].url), lang);
         if (pkmn.name.includes(string)) {
             pkmnArr.push(pkmn);
         }
@@ -70,9 +70,11 @@ function quickRender(pkmn, name) {
 }
 
 function listPokemon(pkmnArr) {
+    fragment = document.createDocumentFragment();
     pkmnArr.forEach(element => {
-        quickRender(element.urlStats, element.name)
+        fragment.appendChild(quickRender(element.stats, element.name))
     });
+    searchList.appendChild(fragment);
 }
 
 // getDexEntries (obj, lang) recibe el objeto y un código de idioma y devuelve un array con las entradas de pokedex en el idioma.
@@ -123,6 +125,7 @@ const pokeTypes = document.querySelector('[data-poke-types]');
 const pokeStats = document.querySelector('[data-poke-stats]');
 const pokeMeasurements = document.querySelector('[data-poke-measurements]')
 const pokedex = document.querySelector('[data-get-dex-entries]')
+const searchList = document.querySelector('[data-poke-list]')
 
 // los colores que asocias a los tipos ( sacados de la tabla de colores hex)
 
@@ -175,12 +178,14 @@ const searchPokemon = event => {
     event.preventDefault();
     const { value } = event.target.pokemon;
     searchMatches(value, "en").then(pkmnArr => {
+        console.log(pkmnArr[0]);
         if (pkmnArr.length == 1) {
-            renderPokemonData(pkmnArr[0].urlStats)
+            console.log("esto no debería pasar");
+            renderPokemonData(pkmnArr[0].stats)
+            const dex = getDexEntries(pkmnArr[0].species);
+            renderDexEntry(dex[Math.floor(Math.random() * dex.length)])
         } else if (pkmnArr.length > 1) {
             listPokemon(pkmnArr);
-            const dex = getDexEntries(pkmnArr[0]);
-            renderDexEntry(dex[Math.floor(Math.random() * dex.length)])
         } else {
             renderNotFound()
         }
@@ -199,15 +204,6 @@ const renderPokemonData = data => {
     renderPokemonTypes(types);
     renderPokemonStats(stats);
 }
-
-function renderPokemonList(pkmnArr) {
-    var fragment = document.createDocumentFragment();
-    for (let i = 0; i < pkmnArr[i]; i++) {
-        fragment
-    }
-
-}
-
 
 const setCardColor = types => {
     const colorOne = typeColors[types[0].type.name];
