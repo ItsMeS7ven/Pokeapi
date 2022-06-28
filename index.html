@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./noseencontro.png" type="icon-logo">
+    <link rel="icon" href="./poke.png" type="icon-logo">
     <title>POKEDEX </title>
 
 
@@ -38,11 +38,35 @@
 
         </section>
 
+
+        <nav class="idiomas">
+            <ul class="menu">
+                <li><a href="#">idiomas</a>
+
+
+                    <ul class="submenu">
+                        <li><a href="#">Ingles</a></li>
+                        <li><a href="#">Español</a></li>
+                        <li><a href="#">Coreano</a></li>
+                        <li><a href="#">Japones</a></li>
+                        <li><a href="#">Italiano</a></li>
+                        <li><a href="#">Checo</a></li>
+                        <li><a href="#">Frances</a></li>
+
+                    </ul>
+
+
+            </ul>
+
+        </nav>
+
     </header>
 
     <div data-poke-list class="poke-list"></div>
     <!--función donde se encuentra en el input ( apretar para buscar el pokemon ;js )-->
     <main>
+
+
 
         <!--data para dar nombre a los dintitos elementos en la pokedex-->
         <div data-poke-card class="poke-card">
@@ -83,11 +107,10 @@
 
         <aside id="biografia">
 
+            <img data-poke-back class="poke-back">
+            <p data-get-dex-entries class="get-dex-entries"></p>
 
-            <img data-poke-back-img class="poke-back-img">
 
-
-            <div data-get-dex-entries class="dex-entries"></div>
 
         </aside>
 
@@ -95,6 +118,7 @@
 
     <footer id="pie-pagina">
         <p>2022 <b>andy and gabs company</b> </p>
+
     </footer>
 
 
@@ -102,8 +126,3 @@
 </body>
 
 </html>
-
-
-
-
-footer { background-color: #000; color: white; padding: 1em 0; align-content: center; align-items: center; font-family: 'Bungee', cursive;; text-align: center; font-size: 15px; width: 100%; height: 20px; margin-top: auto; }

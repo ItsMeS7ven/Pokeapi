@@ -13,6 +13,7 @@ class Pokemon {
 const pokeCard = document.querySelector('[data-poke-card]');
 const pokeName = document.querySelector('[data-poke-name]');
 const pokeImg = document.querySelector('[data-poke-img]');
+const imgBack = document.querySelector('[data-poke-back]');
 const pokeImgContainer = document.querySelector('[data-poke-img-container]');
 const pokeId = document.querySelector('[data-poke-id]');
 const pokeTypes = document.querySelector('[data-poke-types]');
@@ -218,8 +219,10 @@ const searchPokemon = event => {
 const renderPokemonData = data => {
     searchList.innerHTML = "";
     const sprite = data.sprites.front_default;
+    const spriteBack = data.sprites.back_default;
     const { stats, types } = data;
     pokeImg.setAttribute('src', sprite);
+    imgBack.setAttribute('src', spriteBack);
     pokeId.textContent = `Nº ${data.id}`;
     setCardColor(types);
     renderPokemonMeasurements(data);
