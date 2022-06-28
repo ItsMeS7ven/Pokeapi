@@ -1,8 +1,8 @@
 class Pokemon {
-    constructor(name, stats, species) {
+    constructor(name, stats, dexEntries) {
         this.name = name;
         this.stats = stats;
-        this.species = species;
+        this.dexEntries = dexEntries;
     }
     toString() {
         return this.name;
@@ -64,7 +64,16 @@ const typeColors = {
     default: '#FFFFFF',
 
 };
-let lang = "en"
+let lang = "pt-BR"
+const statNames = ["", "", "", "", "", ""]
+
+
+async function setLang(idLang) {
+    for (let i = 1; i <= statNames.length; i++) {
+        statNames[i - 1] = getNameLang(await getData(`https://pokeapi.co/api/v2/stat/${i}/`), idLang);
+    }
+}
+
 
 
 // getData(url) devuelve una promesa que si funciona devuelve el objeto correspondiente a la URL que le hayamos pasado
@@ -91,7 +100,7 @@ function getNameLang(obj, lang) {
 }
 
 async function getPokemon(species, lang) {
-    let pkmn = new Pokemon("", await getData(species.varieties[0].pokemon.url), species);
+    let pkmn = new Pokemon("", await getData(species.varieties[0].pokemon.url), getDexEntries(species, lang));
     for (let i = 0; i < species.names.length; i++) {
         if (species.names[i].language.name === lang) {
             pkmn.name = species.names[i].name;
@@ -123,7 +132,7 @@ function quickRender(pkmn) {
     square.addEventListener("click", event => {
         pokeName.textContent = pkmn.name;
         renderPokemonData(pkmn.stats);
-        const dex = getDexEntries(pkmn.species, lang);
+        const dex = pkmn.dexEntries;
         renderDexEntry(dex[Math.floor(Math.random() * dex.length)]);
     });
     const img = document.createElement("img");
@@ -199,7 +208,7 @@ const searchPokemon = event => {
         } else {
             pokeName.textContent = pkmnArr[0].name;
             renderPokemonData(pkmnArr[0].stats)
-            const dex = getDexEntries(pkmnArr[0].species, lang);
+            const dex = pkmnArr[0].dexEntries;
             renderDexEntry(dex[Math.floor(Math.random() * dex.length)])
         }
     })
@@ -238,16 +247,17 @@ const renderPokemonTypes = types => {
 
 const renderPokemonStats = stats => {
     pokeStats.innerHTML = '';
-    stats.forEach(stat => {
+    for (let i = 0; i < stats.length; i++) {
+        const stat = stats[i];
         const statElement = document.createElement("div");
         const statElementName = document.createElement("div");
         const statElementAmount = document.createElement("div");
-        statElementName.textContent = stat.stat.name;
+        statElementName.textContent = statNames[i];
         statElementAmount.textContent = stat.base_stat;
         statElement.appendChild(statElementName);
         statElement.appendChild(statElementAmount);
         pokeStats.appendChild(statElement);
-    });
+    };
 }
 
 function renderPokemonMeasurements(pokemon) {
@@ -271,3 +281,4 @@ function renderDexEntry(entry) {
     listPokemon.innerHTML = "";
     pokedex.textContent = entry;
 }
+setLang(lang);
