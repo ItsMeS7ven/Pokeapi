@@ -21,6 +21,7 @@ const pokeStats = document.querySelector('[data-poke-stats]');
 const pokeMeasurements = document.querySelector('[data-poke-measurements]')
 const pokedex = document.querySelector('[data-get-dex-entries]')
 const searchList = document.querySelector('[data-poke-list]')
+const langList = document.querySelector('[data-lang]')
 
 // los colores que asocias a los tipos ( sacados de la tabla de colores hex)
 
@@ -65,7 +66,7 @@ const typeColors = {
     default: '#FFFFFF',
 
 };
-let lang = "pt-BR"
+let lang;
 const statNames = ["", "", "", "", "", ""]
 
 
@@ -73,8 +74,25 @@ async function setLang(idLang) {
     for (let i = 1; i <= statNames.length; i++) {
         statNames[i - 1] = getNameLang(await getData(`https://pokeapi.co/api/v2/stat/${i}/`), idLang);
     }
+    lang = idLang;
 }
-
+async function getAllLang() {
+    const langArr = await getData('https://pokeapi.co/api/v2/language/');
+    console.log(langArr);
+    langArr.results.forEach(qLang => {
+        langList.innerHTML = "";
+        getData(qLang.url).then(langData => {
+            const langName = getNameLang(langData, lang);
+            const li = document.createElement("li");
+            li.innerHTML = `<a href=\"#\">${langName}</a>`;
+            li.addEventListener("click", event => {
+                setLang(langData.name);
+                getAllLang();
+            })
+            langList.appendChild(li);
+        })
+    })
+}
 
 
 // getData(url) devuelve una promesa que si funciona devuelve el objeto correspondiente a la URL que le hayamos pasado
@@ -284,4 +302,5 @@ function renderDexEntry(entry) {
     listPokemon.innerHTML = "";
     pokedex.textContent = entry;
 }
-setLang(lang);
+setLang("en");
+getAllLang();
