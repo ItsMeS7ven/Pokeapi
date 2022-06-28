@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" href="./poke.png" type="icon-logo">
-        <title>POKEDEX </title>
-        
-    
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./poke.png" type="icon-logo">
+    <title>POKEDEX </title>
+
+
     <!--fuente de texto -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Concert+One&family=Press+Start+2P&display=swap" rel="stylesheet">
-    
-    
-    
-    
+
+
+
+
     <!--enlaces al css y al js ( el defer se utiliza para no tener que mandar el script al final del body!!)-->
     <script src="script.js" type="text/javascript" defer></script>
-    <link href="styles.css"  rel="stylesheet" />
-    
-    </head>
+    <link href="styles.css" rel="stylesheet" />
+
+</head>
 
 <body>
 
@@ -32,90 +32,85 @@
         <section id="poke-card">
             <form action="" onsubmit="searchPokemon (event)">
 
-    <!--el autocomplete es para que aparezca el historial de busquedas de pokemons . secundario-->
-                <input type="text" name="pokemon" placeholder="Busca tu pokemon"   autocomplete="off" >
-            </form> 
-            
+                <!--el autocomplete es para que aparezca el historial de busquedas de pokemons . secundario-->
+                <input type="text" name="pokemon" placeholder="Busca tu pokemon" autocomplete="off">
+            </form>
+
         </section>
 
 
         <nav class="idiomas">
             <ul class="menu">
-                <li><a href="#">idiomas</a>
+                <li>
+                    <a href="#">idiomas</a>
 
 
-                    <ul class="submenu">
-                        <li><a href="#">Ingles</a></li>
-                        <li><a href="#">Español</a></li>
-                        <li><a href="#">Coreano</a></li>
-                        <li><a href="#">Japones</a></li>
-                        <li><a href="#">Italiano</a></li>
-                        <li><a href="#">Checo</a></li>
-                        <li><a href="#">Frances</a></li>
+                    <ul data-lang class="submenu">
+
 
                     </ul>
 
-
+                </li>
             </ul>
-        
-    </nav>
-        
+
+        </nav>
+
     </header>
 
-
-<!--función donde se encuentra en el input ( apretar para buscar el pokemon ;js )-->
+    <div data-poke-list class="poke-list"></div>
+    <!--función donde se encuentra en el input ( apretar para buscar el pokemon ;js )-->
     <main>
-        
-        
 
-    <!--data para dar nombre a los dintitos elementos en la pokedex-->
-        <div data-poke-card class="poke-card"> 
 
-    <!--nombre pokemon-->
+
+        <!--data para dar nombre a los dintitos elementos en la pokedex-->
+        <div data-poke-card class="poke-card">
+
+            <!--nombre pokemon-->
             <div data-poke-name class="nombre"></div>
 
-    <!--imagen pokemon ; si no existe ese pokemon saldra la imagen del poke-shadow-->
+            <!--imagen pokemon ; si no existe ese pokemon saldra la imagen del poke-shadow-->
             <div data-poke-img-container class="img-container ">
 
-                    <img data-poke-img class="poke-img" src="noseencontro.png">
+                <img data-poke-img class="poke-img" src="noseencontro.png">
 
             </div>
-            
+
 
             <div class="datos">
-        <!--altura y peso del pokemon ( metros / kg )-->
+                <!--altura y peso del pokemon ( metros / kg )-->
                 <div data-poke-measurements class="pokeMeasurements"></div>
 
-        <!--el numero de la pokedex del respectivo pokemon-->
+                <!--el numero de la pokedex del respectivo pokemon-->
                 <div data-poke-id class="poke-id"></div>
 
             </div>
 
-    <!--los tipos de los pokemon ( agua, fuego, etc..)-->
+            <!--los tipos de los pokemon ( agua, fuego, etc..)-->
             <div data-poke-types class="poke-types"></div>
 
-    <!--las estadisticas de cada pokemon-->   
+            <!--las estadisticas de cada pokemon-->
             <div data-poke-stats class="poke-stats"></div>
 
-    <!--los botones para ver la imagen de la parte trasera y el shiny-->
+            <!--los botones para ver la imagen de la parte trasera y el shiny-->
 
 
         </div>
 
-            
+
         </section>
 
-        <aside id= "biografia">
+        <aside id="biografia">
 
             <img data-poke-back class="poke-back">
+            <p data-get-dex-entries class="get-dex-entries"></p>
 
-            <img data-poke-shiny class="poke-shiny">
-            
+
 
         </aside>
 
     </main>
-            
+
     <footer id="pie-pagina">
         <p>2022 <b>andy and gabs company</b> </p>
 

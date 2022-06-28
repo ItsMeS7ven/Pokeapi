@@ -1,85 +1,27 @@
-// getData(url) devuelve una promesa que si funciona devuelve el objeto correspondiente a la URL que le hayamos pasado
-// La URL debe ser válida
-async function getData(url) {
-    const res = await fetch(url)
-    const data = await res.json()
-    return data
-}
-// getNameLang (obj, lang) recibe el objeto y un código de idioma y devuelve el nombre en el idioma.
-// Si el código de idioma no coincide con los disponibles devuelve inglés (en).
-// El objeto recibido debe poseer las estructuras obj.names[].name obj.names[].language.name
-function getNameLang(obj, lang) {
-    let en;
-    for (let i = 0; i < obj.names.length; i++) {
-
-        if (obj.names[i].language.name === lang) {
-            return obj.names[i].name
-        } else if (obj.names[i].language.name === "en") {
-            en = obj.names[i].name
-        }
+class Pokemon {
+    constructor(name, stats, dexEntries) {
+        this.name = name;
+        this.stats = stats;
+        this.dexEntries = dexEntries;
     }
-    return en
-}
-
-// getDexEntries (obj, lang) recibe el objeto y un código de idioma y devuelve un array con las entradas de pokedex en el idioma.
-// Si el código de idioma no coincide con los disponibles devuelve inglés (en).
-// El objeto recibido debe poseer las estructuras obj.flavor_text_entries[].flavor_text obj.flavor_text_entries[].language.name
-function getDexEntries(obj, lang) {
-    let enArr = new Array;
-    let langArr = new Array;
-    for (let i = 0; i < obj.flavor_text_entries.length; i++) {
-
-        if (obj.flavor_text_entries[i].language.name === lang) {
-            langArr.push(obj.flavor_text_entries[i].flavor_text)
-        } else if (obj.flavor_text_entries[i].language.name === "en") {
-            enArr.push(obj.flavor_text_entries[i].flavor_text)
-        }
-    }
-    if (langArr.length < 0) {
-        return langArr
-    } else {
-        return enArr
+    toString() {
+        return this.name;
     }
 }
-
-// getAllSpecies(string, lang) recibe un string y un código de idioma y devuelve un array con todos las especies de pokemon cuyo nombre contenga el string.
-// Si el código de idioma no coincide con los disponibles  devolverá un array vacío.
-//
-async function getAllSpecies(string, lang) {
-    string = string.toLowerCase();
-    let pkmnArr = new Array;
-    const allData = await getData("https://pokeapi.co/api/v2/pokemon-species/?limit=20000");
-    for (let i = 0; i < allData.count; i++) {
-        const pkmn = await getData(allData.results[i].url);
-        if (getNameLang(pkmn, lang).toLowerCase().includes(string)) {
-            pkmnArr.push(pkmn)
-        }
-    }
-    return pkmnArr
-}
-
 // asociamos los data
 
 const pokeCard = document.querySelector('[data-poke-card]');
-
 const pokeName = document.querySelector('[data-poke-name]');
-
 const pokeImg = document.querySelector('[data-poke-img]');
-
-const pokeImgBack = document.querySelector('[data-poke-back]')
-
-const pokeImgShiny = document.querySelector('[data-poke-shiny]')
-
+const imgBack = document.querySelector('[data-poke-back]');
 const pokeImgContainer = document.querySelector('[data-poke-img-container]');
-
 const pokeId = document.querySelector('[data-poke-id]');
-
 const pokeTypes = document.querySelector('[data-poke-types]');
-
 const pokeStats = document.querySelector('[data-poke-stats]');
-
 const pokeMeasurements = document.querySelector('[data-poke-measurements]')
-
+const pokedex = document.querySelector('[data-get-dex-entries]')
+const searchList = document.querySelector('[data-poke-list]')
+const langList = document.querySelector('[data-lang]')
 
 // los colores que asocias a los tipos ( sacados de la tabla de colores hex)
 
@@ -119,54 +61,198 @@ const typeColors = {
 
     fairy: '#F783E3',
 
+    dark: '#705746',
+
     default: '#FFFFFF',
 
 };
+let lang;
+const statNames = ["", "", "", "", "", ""]
+
+
+async function setLang(idLang) {
+    for (let i = 1; i <= statNames.length; i++) {
+        statNames[i - 1] = getNameLang(await getData(`https://pokeapi.co/api/v2/stat/${i}/`), idLang);
+    }
+    lang = idLang;
+}
+async function getAllLang() {
+    const langArr = await getData('https://pokeapi.co/api/v2/language/');
+    console.log(langArr);
+    langArr.results.forEach(qLang => {
+        langList.innerHTML = "";
+        getData(qLang.url).then(langData => {
+            const langName = getNameLang(langData, lang);
+            const li = document.createElement("li");
+            li.innerHTML = `<a href=\"#\">${langName}</a>`;
+            li.addEventListener("click", event => {
+                setLang(langData.name);
+                getAllLang();
+            })
+            langList.appendChild(li);
+        })
+    })
+}
+
+
+// getData(url) devuelve una promesa que si funciona devuelve el objeto correspondiente a la URL que le hayamos pasado
+// La URL debe ser válida
+async function getData(url) {
+    const res = await fetch(url)
+    const data = await res.json()
+    return data
+}
+// getNameLang (obj, lang) recibe el objeto y un código de idioma y devuelve el nombre en el idioma.
+// Si el código de idioma no coincide con los disponibles devuelve inglés (en).
+// El objeto recibido debe poseer las estructuras obj.names[].name obj.names[].language.name
+function getNameLang(obj, lang) {
+    let en;
+    for (let i = 0; i < obj.names.length; i++) {
+
+        if (obj.names[i].language.name === lang) {
+            return obj.names[i].name
+        } else if (obj.names[i].language.name === "en") {
+            en = obj.names[i].name
+        }
+    }
+    return en
+}
+
+async function getPokemon(species, lang) {
+    let pkmn = new Pokemon("", await getData(species.varieties[0].pokemon.url), getDexEntries(species, lang));
+    for (let i = 0; i < species.names.length; i++) {
+        if (species.names[i].language.name === lang) {
+            pkmn.name = species.names[i].name;
+            return pkmn;
+        } else if (species.names[i].language.name === "en") {
+            pkmn.name = species.names[i].name;
+        }
+    }
+    return pkmn
+}
+
+async function searchMatches(string, lang) {
+    const allData = await getData("https://pokeapi.co/api/v2/pokemon-species/?limit=20000");
+    string = string.toLowerCase();
+    let pkmnArr = new Array;
+    for (let i = 0; i < allData.count; i++) {
+        let pkmn = await getPokemon(await getData(allData.results[i].url), lang);
+        if (pkmn.name.toLowerCase().includes(string)) {
+            pkmnArr.push(pkmn);
+        }
+    }
+    return pkmnArr
+}
+
+//quickRender(pkmn, name) genera cada una de las piezas de la lista de pokemon a elegir
+function quickRender(pkmn) {
+    fragment = document.createDocumentFragment();
+    const square = document.createElement("div")
+    square.addEventListener("click", event => {
+        pokeName.textContent = pkmn.name;
+        renderPokemonData(pkmn.stats);
+        const dex = pkmn.dexEntries;
+        renderDexEntry(dex[Math.floor(Math.random() * dex.length)]);
+    });
+    const img = document.createElement("img");
+    img.setAttribute("src", pkmn.stats.sprites.front_default);
+    img.style.backgroundColor = typeColors[pkmn.stats.types[0].type.name];
+    const txt = document.createElement("p");
+    txt.append(document.createTextNode(pkmn.name));
+    square.appendChild(img);
+    square.appendChild(txt)
+    fragment.appendChild(square);
+    return fragment;
+}
+
+function listPokemon(pkmnArr) {
+    pkmnArr.forEach(element => {
+        searchList.appendChild(quickRender(element))
+    });
+}
+
+// getDexEntries (obj, lang) recibe el objeto y un código de idioma y devuelve un array con las entradas de pokedex en el idioma.
+// Si el código de idioma no coincide con los disponibles devuelve inglés (en).
+// El objeto recibido debe poseer las estructuras obj.flavor_text_entries[].flavor_text obj.flavor_text_entries[].language.name
+function getDexEntries(obj, lang) {
+    let enArr = new Array;
+    let langArr = new Array;
+    for (let i = 0; i < obj.flavor_text_entries.length; i++) {
+
+        if (obj.flavor_text_entries[i].language.name === lang) {
+            langArr.push(obj.flavor_text_entries[i].flavor_text)
+        } else if (obj.flavor_text_entries[i].language.name === "en") {
+            enArr.push(obj.flavor_text_entries[i].flavor_text)
+        }
+    }
+    if (langArr.length > 0) {
+        return langArr
+    } else {
+        return enArr
+    }
+}
+
+// getAllSpecies(string, lang) recibe un string y un código de idioma y devuelve un array con todos las especies de pokemon cuyo nombre contenga el string.
+// Si el código de idioma no coincide con los disponibles  devolverá un array vacío.
+//
+async function getAllSpecies(string, lang) {
+    string = string.toLowerCase();
+    let pkmnArr = new Array;
+    const allData = await getData("https://pokeapi.co/api/v2/pokemon-species/?limit=20000");
+    for (let i = 0; i < allData.count; i++) {
+        const pkmn = await getData(allData.results[i].url);
+        if (getNameLang(pkmn, lang).toLowerCase().includes(string)) {
+            pkmnArr.push(pkmn)
+        }
+    }
+    return pkmnArr
+}
 
 
 /*creamos la funcion searchPokemon asociada al onsubmit del hmtl ;
-en el fetch pondremos el enlace de la api que utilicemos ; por ultimo renderPokemonData es para obtener los sprites*/
+en el fetch pondremos el enlace de la api que utilicemos y ToLowerCase para
+que no de problemas al usuario si utiliza mayusculas; por ultimo renderPokemonData es para obtener los sprites*/
 
 const searchPokemon = event => {
     event.preventDefault();
     const { value } = event.target.pokemon;
-    getAllSpecies(value, "en").then(pkmnArr => {
-        if (pkmnArr.length === 1) {
-            getData(pkmnArr[0].varieties[0].pokemon.url).then(pokemon => {
-                renderPokemonData(pokemon)
-            })
+    searchList.innerHTML = "";
+    pokedex.innerHTML = "";
+    searchMatches(value, lang).then(pkmnArr => {
+        console.log(pkmnArr);
+        if (pkmnArr.length == 0) {
+            renderNotFound()
+        } else if (pkmnArr.length > 1) {
+            listPokemon(pkmnArr);
         } else {
-            renderNotFound();
+            pokeName.textContent = pkmnArr[0].name;
+            renderPokemonData(pkmnArr[0].stats)
+            const dex = pkmnArr[0].dexEntries;
+            renderDexEntry(dex[Math.floor(Math.random() * dex.length)])
         }
-    });
+    })
 
 }
 
-
-
-
 const renderPokemonData = data => {
+    searchList.innerHTML = "";
     const sprite = data.sprites.front_default;
     const spriteBack = data.sprites.back_default;
-    const spriteShiny = data.sprites.front_shiny;
-    console.log(spriteShiny)
     const { stats, types } = data;
-    pokeName.textContent = data.name;
     pokeImg.setAttribute('src', sprite);
-    pokeImgBack.setAttribute('src',spriteBack);
-    //pokeImgShiny.setAttribute('src',spriteShiny);
+    imgBack.setAttribute('src', spriteBack);
     pokeId.textContent = `Nº ${data.id}`;
     setCardColor(types);
     renderPokemonMeasurements(data);
     renderPokemonTypes(types);
     renderPokemonStats(stats);
+
 }
 
-
-
-
 const setCardColor = types => {
-    const color = typeColors[types[0].type.name];
+    const colorOne = typeColors[types[0].type.name];
+    const colorTwo = types[1] ? typeColors[types[1].type.name] : typeColors.default;
+    pokeImg.style.background = `-gradient(${colorTwo} 33%, ${colorOne} 33%)`;
     pokeImg.style.backgroundSize = ' 10px 10px';
 }
 
@@ -182,16 +268,17 @@ const renderPokemonTypes = types => {
 
 const renderPokemonStats = stats => {
     pokeStats.innerHTML = '';
-    stats.forEach(stat => {
+    for (let i = 0; i < stats.length; i++) {
+        const stat = stats[i];
         const statElement = document.createElement("div");
         const statElementName = document.createElement("div");
         const statElementAmount = document.createElement("div");
-        statElementName.textContent = stat.stat.name;
+        statElementName.textContent = statNames[i];
         statElementAmount.textContent = stat.base_stat;
         statElement.appendChild(statElementName);
         statElement.appendChild(statElementAmount);
         pokeStats.appendChild(statElement);
-    });
+    };
 }
 
 function renderPokemonMeasurements(pokemon) {
@@ -202,11 +289,19 @@ function renderPokemonMeasurements(pokemon) {
 const renderNotFound = () => {
     pokeName.textContent = 'No encontrado';
     pokeImg.setAttribute('src', 'sadge.png');
-    pokeImgBack.setAttribute('src', '');
-    pokeImgShiny.setAttribute('src', '');
+    imgBack.setAttribute('src',"");
     pokeImg.style.background = '#fff';
     pokeTypes.innerHTML = '';
     pokeStats.innerHTML = '';
     pokeId.textContent = '';
-    pokeMeasurements.innerHTML ='';
+    renderDexEntry("????????????????????????????????????????")
+    pokeMeasurements.innerHTML = '';
+
 }
+
+function renderDexEntry(entry) {
+    listPokemon.innerHTML = "";
+    pokedex.textContent = entry;
+}
+setLang("en");
+getAllLang();
