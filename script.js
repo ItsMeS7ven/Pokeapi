@@ -66,7 +66,9 @@ const pokeName = document.querySelector('[data-poke-name]');
 
 const pokeImg = document.querySelector('[data-poke-img]');
 
-const pokeImgBack = document.querySelector('[data-poke-back-img]')
+const pokeImgBack = document.querySelector('[data-poke-back]')
+
+const pokeImgShiny = document.querySelector('[data-poke-shiny]')
 
 const pokeImgContainer = document.querySelector('[data-poke-img-container]');
 
@@ -78,7 +80,6 @@ const pokeStats = document.querySelector('[data-poke-stats]');
 
 const pokeMeasurements = document.querySelector('[data-poke-measurements]')
 
-const spriteShiny = document.querySelector('[data-img-shiny]')
 
 // los colores que asocias a los tipos ( sacados de la tabla de colores hex)
 
@@ -147,10 +148,13 @@ const searchPokemon = event => {
 const renderPokemonData = data => {
     const sprite = data.sprites.front_default;
     const spriteBack = data.sprites.back_default;
+    const spriteShiny = data.sprites.front_shiny;
+    console.log(spriteShiny)
     const { stats, types } = data;
     pokeName.textContent = data.name;
     pokeImg.setAttribute('src', sprite);
     pokeImgBack.setAttribute('src',spriteBack);
+    //pokeImgShiny.setAttribute('src',spriteShiny);
     pokeId.textContent = `Nº ${data.id}`;
     setCardColor(types);
     renderPokemonMeasurements(data);
@@ -199,11 +203,10 @@ const renderNotFound = () => {
     pokeName.textContent = 'No encontrado';
     pokeImg.setAttribute('src', 'sadge.png');
     pokeImgBack.setAttribute('src', '');
+    pokeImgShiny.setAttribute('src', '');
     pokeImg.style.background = '#fff';
     pokeTypes.innerHTML = '';
     pokeStats.innerHTML = '';
     pokeId.textContent = '';
     pokeMeasurements.innerHTML ='';
-
-
 }

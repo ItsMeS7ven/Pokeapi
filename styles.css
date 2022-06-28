@@ -15,7 +15,7 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: space-between;
         align-content:center;
         padding: 10px;
         align-content: center;
@@ -29,15 +29,75 @@
         background-image: url(https://flyclipart.com/thumb2/explosion-gif-transparent-transparent-gif-sticker-741584.png);
         background-repeat: no-repeat;
         background-size:100px;
-        background-position:center;
+        background-position:left;
+
     
     }
 
     h1{
-        margin-right: 150px;
-
+        margin-left: 70px;
 
     }
+    
+    .idiomas{
+    background-color: rgb(0, 0, 0);
+    width: 300px;
+    font-size: 25px;
+
+    }
+
+    .idiomas ul{
+    list-style: none;
+
+    }
+
+    .menu > li{
+    position: relative;
+    display: inline-block;
+
+    }
+
+    .menu >li >a{
+    display: block;
+    padding: 10px 10px;
+    color: rgb(255, 255, 255);
+    font-family: 'Bungee', cursive;;
+    text-decoration: none;
+
+    }
+
+    .menu li a:hover{
+    color: rgb(226, 0, 0);
+    transition: all .3s;
+    }
+
+
+
+
+.submenu {
+    position: absolute;
+    background-color: #000;
+    display: none;
+    width: 100%;
+    padding: 20px;
+
+}
+
+.submenu li a{
+    display: block;
+    padding: 15px;
+    color: white;
+    font-family: 'Concert One', cursive;
+    text-decoration: none;
+
+}
+
+.menu li:hover .submenu{
+    display: block;
+    color: white;
+
+}
+
     
     
     
@@ -103,7 +163,7 @@
         text-align: center;
         padding: 10px;
         background-image: url(https://i.pinimg.com/originals/67/2e/50/672e5067d25d0c252e669afc569578ea.jpg);
-        background-position: -345px -940px;
+        background-position: -335px -940px;
         background-size:1500px;
         background-repeat: no-repeat;
         border: 5px solid rgb(0, 0, 0);
@@ -221,40 +281,42 @@
         background-color: rgb(0, 0, 0);
     }
     
-    .back-img {
-        width: 80px;
-        margin: 20px;
-        padding: 10px;
+    .poke-back {
+        width: 170px;
+        border-radius: 50%;
+        padding-top: 105px;
+
 
     }
     
     .poke-img {
-        width: 180px;
+        width: 170px;
+        border-radius: 50%;
+        background-color: rgb(255, 255, 255);
         border-radius: 50%;
     }
 
-    
-    .poke-back-img {
+
+    .poke-shiny-img {
         width: 180px;
-        border-radius: 50%;
     }
 
 
     aside {
     
-    font-family: 'Concert One', cursive;
-    width: 700px;
-    border-radius: 30px;
-    color: rgb(255, 255, 255);
-    text-align: center;
-    line-height: 50px;
-    padding: 50px;
-    background-color: rgb(180, 3, 3);
-    background-attachment: fixed;
-    border: 5px solid rgb(0, 0, 0);
-    margin: 10px ;
-    max-height: 500px fit-content;
-    font-size: 15px;
+        min-height: 700px fit-content;
+        font-family: 'Concert One', cursive;
+        width: 800px;
+        border-radius: 30px;
+        color: #000;
+        text-align: center;
+        padding: 10px;
+        background-image: url(https://i.pinimg.com/originals/67/2e/50/672e5067d25d0c252e669afc569578ea.jpg);
+        background-position: -393px -1000px;
+        background-size:1600px;
+        background-repeat: no-repeat;
+        border: 5px solid rgb(0, 0, 0);
+        margin: 5px;
     }
 
 
